@@ -1,26 +1,227 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    color-scheme: dark;
+    --primary: #000000;
+    --bg: #000000;
+    --fg: #ffffff;
+    --muted: rgba(255, 255, 255, 0.72);
+
+    --card: #0b0b0b;
+    --card-2: #111111;
+    --border: rgba(255, 255, 255, 0.12);
+
+    --shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+    --ring: rgba(255, 255, 255, 0.18);
+    --ring-strong: rgba(255, 255, 255, 0.28);
+
+    --radius: 14px;
+    --radius-sm: 10px;
+    --gap: 14px;
+
+    --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+        Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+    height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-family: var(--font);
+    line-height: 1.5;
+    color: var(--fg);
+    background: var(--bg);
+}
+
+::selection {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+:where(main, section) {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 28px);
+}
+
+:where(section) {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+:where(h1) {
+    margin: 0 0 8px 0;
+    font-size: clamp(26px, 2.6vw, 36px);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+}
+
+:where(p) {
+    margin: 10px 0;
+    color: var(--muted);
+}
+
+:where(a) {
+    color: var(--fg);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+}
+
+:where(a:hover) {
+    opacity: 0.86;
+}
+
+:where(form) {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 14px 0;
+}
+
+:where(input, textarea, select) {
+    appearance: none;
+    font: inherit;
+    color: var(--fg);
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    min-height: 42px;
+    outline: none;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+}
+
+:where(input, textarea, select):focus-visible {
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 0 0 5px var(--ring);
+}
+
+:where(input)::placeholder,
+:where(textarea)::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+:where(button) {
+    font: inherit;
+    color: #000;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    background: #fff;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    min-height: 42px;
+    cursor: pointer;
+    transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease,
+        border-color 120ms ease;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+:where(button:hover) {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+}
+
+:where(button:active) {
+    transform: translateY(0);
+    filter: brightness(0.98);
+}
+
+:where(button):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 5px var(--ring-strong), 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+:where(button[disabled]),
+:where(input[disabled]),
+:where(textarea[disabled]),
+:where(select[disabled]) {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+:where(button[formaction]) {
+    background: transparent;
+    color: var(--fg);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: none;
+}
+
+:where(button[formaction]:hover) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+:where(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+    display: grid;
+    gap: var(--gap);
+}
+
+:where(li) {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 12px 12px;
+}
+
+:where(li > form) {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    margin: 0;
+}
+
+:where(li > form input) {
+    width: 100%;
+}
+
+@media (max-width: 520px) {
+    :where(li > form) {
+        grid-template-columns: 1fr;
+    }
+}
+
+:where(p[role="alert"]) {
+    margin: 8px 0 0 0;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--fg);
+}
+
+:where(p[aria-live]) {
+    margin: 10px 0 0 0;
+    color: var(--muted);
+}
+
+:where(code) {
+    font-family: var(--mono);
+    font-size: 0.95em;
+}
+
+:where(pre) {
+    overflow: auto;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--card-2);
+}
+
+:where(form:has(button[disabled])) :where(input) {
+    border-color: rgba(255, 255, 255, 0.18);
 }
