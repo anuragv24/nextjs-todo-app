@@ -11,143 +11,78 @@ function transformUser(userDoc) {
 }
 
 export default async function Users() {
-    await connectDB();
+  await connectDB();
 
-     const rawUsers = await User.find({})
+  const rawUsers = await User.find({})
     .select("-password")
     .sort({ createdAt: -1 });
 
-    const users = rawUsers.map(transformUser);
-    
-   return (
+  const users = rawUsers.map(transformUser);
+
+  return (
     <div className="space-y-10">
-
-      {/* PAGE HEADER */}
       <div>
+        <h1 className="text-4xl font-bold">Users</h1>
 
-        <h1 className="text-4xl font-bold">
-          Users
-        </h1>
-
-        <p className="text-zinc-400 mt-2">
-          Registered users of the platform
-        </p>
-
+        <p className="text-zinc-400 mt-2">Registered users of the platform</p>
       </div>
 
-      {/* USERS SECTION */}
       <section className="space-y-6">
-
-        {/* TOP INFO */}
         <div
           className="
             flex items-center justify-between
           "
         >
+          <h2 className="text-2xl font-semibold">All Users</h2>
 
-          <h2 className="text-2xl font-semibold">
-            All Users
-          </h2>
-
-          <span className="text-zinc-500 text-sm">
-            {users.length} Users
-          </span>
-
+          <span className="text-zinc-500 text-sm">{users.length} Users</span>
         </div>
 
-        {/* EMPTY STATE */}
-        {
-          users.length === 0 ? (
-
-            <div
-              className="
+        {users.length === 0 ? (
+          <div
+            className="
                 bg-[#171717]
                 border border-dashed border-zinc-800
                 rounded-2xl
                 p-12
                 text-center
               "
-            >
-
-              <p className="text-zinc-500">
-                No users found.
-              </p>
-
-            </div>
-
-          ) : (
-
-            <div
-              className="
+          >
+            <p className="text-zinc-500">No users found.</p>
+          </div>
+        ) : (
+          <div
+            className="
                 grid
                 grid-cols-1
                 md:grid-cols-2
                 xl:grid-cols-3
                 gap-5
               "
-            >
+          >
+            {users.map((user) => (
+              <div
+                key={user._id}
+                className="  bg-[#171717]   border border-zinc-800  rounded-2xl   p-6    hover:border-zinc-700   transition-all duration-200 "
+              >
+                <h3 className="text-xl font-semibold text-white">
+                  {user.name}
+                </h3>
 
-              {
-                users.map((user) => (
+                <p className="text-zinc-400 mt-2 break-all">{user.email}</p>
 
-                  <div
-                    key={user._id}
-                    className="
-                      bg-[#171717]
-                      border border-zinc-800
-                      rounded-2xl
-                      p-6
-                      hover:border-zinc-700
-                      transition-all duration-200
-                    "
-                  >
+                <div className="mt-6 pt-4  border-t border-zinc-800   flex items-center justify-between">
+                  <span className="text-sm text-zinc-500">Joined</span>
 
-                    {/* USER NAME */}
-                    <h3 className="text-xl font-semibold text-white">
-                      {user.name}
-                    </h3>
-
-                    {/* EMAIL */}
-                    <p className="text-zinc-400 mt-2 break-all">
-                      {user.email}
-                    </p>
-
-                    {/* FOOTER */}
-                    <div
-                      className="
-                        mt-6
-                        pt-4
-                        border-t border-zinc-800
-                        flex items-center justify-between
-                      "
-                    >
-
-                      <span className="text-sm text-zinc-500">
-                        Joined
-                      </span>
-
-                      <span className="text-sm text-zinc-400">
-                        {
-                          new Date(
-                            user.createdAt
-                          ).toLocaleDateString()
-                        }
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                ))
-              }
-
-            </div>
-
-          )
-        }
-
+                  <span className="text-sm text-zinc-400">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
-
     </div>
   );
 }

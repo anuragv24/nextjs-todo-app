@@ -6,6 +6,7 @@ import TodoForm from "@/components/todo/TodoForm";
 import TodoListComponent from "@/components/todo/TodoListComponent";
 import Link from "next/link";
 import getCurrentUser from "@/lib/getCurrentUser";
+import { redirect } from "next/navigation";
 
 export default async function TodoPage({ params }) {
   await connectDB();
