@@ -1,17 +1,49 @@
 const TodoStats = ({ todos }) => {
   const totalTodos = todos.length;
 
-  const completedTodos = todos.filter((t) => t.isCompleted).length;
+const completedTodos = todos.filter(
+    (todo) => todo.status === "completed"
+  ).length;
+
+  const pendingTodos = todos.filter(
+    (todo) => todo.status === "pending"
+  ).length;
+
+  const inProgressTodos = todos.filter(
+    (todo) => todo.status === "in-progress"
+  ).length;
+
 
   return (
-    <div className="w-full flex gap-4 items-center justify-between text-xs sm:text-sm tracking-tight font-medium text-zinc-400">
-      <div className="flex-1 bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        Total Tasks:{" "}
-        <span className="text-zinc-100 ml-1 font-semibold">{totalTodos}</span>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm tracking-tight font-medium">
+      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
+        <p className="text-zinc-400">Total Tasks</p>
+
+        <span className="text-zinc-100 text-lg font-semibold">
+          {totalTodos}
+        </span>
       </div>
-      <div className="flex-1 bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        Completed:{" "}
-        <span className="text-emerald-400 ml-1 font-semibold">
+
+      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
+        <p className="text-zinc-400">Pending</p>
+
+        <span className="text-yellow-400 text-lg font-semibold">
+          {pendingTodos}
+        </span>
+      </div>
+
+      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
+        <p className="text-zinc-400">In Progress</p>
+
+        <span className="text-blue-400 text-lg font-semibold">
+          {inProgressTodos}
+        </span>
+      </div>
+
+      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
+        <p className="text-zinc-400">Completed</p>
+
+        <span className="text-emerald-400 text-lg font-semibold">
           {completedTodos}
         </span>
       </div>

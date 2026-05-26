@@ -10,8 +10,7 @@ const TodoListComponent = ({ todos }) => {
   }
 
   return (
-    <div className="max-h-[420px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
-      {" "}
+    <div className="w-full">
       <ul className="space-y-2.5">
         {todos.map((todo) => (
           <li key={todo._id}>

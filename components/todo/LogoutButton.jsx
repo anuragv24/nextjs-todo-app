@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function LogoutButton(){
     const router =  useRouter();
@@ -16,6 +17,7 @@ export default function LogoutButton(){
             if(data.success){
                 router.push("/login")
                 router.refresh()
+                toast.success("Logout successful")
             }
         } catch (error) {
             console.log(error)

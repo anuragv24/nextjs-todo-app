@@ -1,53 +1,73 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function TodoListCard({ list }) {
   const router = useRouter();
+  const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState("");
 
-  const deleteTodoList = async (e, id) => {
-    console.log("button clicked")
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("reached here !!")
+  const deleteTodoList = async (id) => {
+    setDeleting(true);
+    setError("");
 
     try {
-      const res = await fetch(`/api/todolists`, { 
+      const res = await fetch(`/api/todolists`, {
         method: "DELETE",
         headers: {
-            "Content-Type" : "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({todoListId: id})
-     });
+        body: JSON.stringify({ todoListId: id }),
+      });
 
-     const data = await res.json();
-     if(data.success){
-        router.refresh();
-     }
+      const data = await res.json();
 
+      if (!data.success) {
+        setError(data.message || "Failed to delete todo list");
+        return;
+      }
+
+      router.refresh();
     } catch (error) {
-      console.log(error);
+      setError("Something went wrong while deleting the list");
+    } finally {
+      setDeleting(false);
     }
   };
 
   return (
-    <Link
-      href={`/todos/${list._id}`}
-      className="group flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl p-5 hover:border-zinc-700 hover:bg-zinc-900/80 transition-all duration-200 shadow-sm"
-    >
-      <h3 className="text-base font-medium text-zinc-100 group-hover:text-white transition-colors duration-200 truncate pr-4">
-        {list.title}
-      </h3>
-      <button
-        onClick={(e) => deleteTodoList(e, list._id)}
-        className="px-2.5 py-1 text-xs font-medium rounded text-zinc-400 hover:text-red-400 hover:bg-red-950/40 border border-transparent hover:border-red-950/50 transition duration-150 cursor-pointer"
-      >
-        Delete
-      </button>
-      <span className="text-zinc-500 group-hover:text-zinc-300 transform group-hover:translate-x-0.5 transition-all duration-200 text-sm flex-shrink-0">
-        →
-      </span>
-    </Link>
+    <div className="bg-[#171717] border border-zinc-800 rounded-2xl p-5 hover:border-zinc-700 transition-all duration-200">
+      <Link href={`/tasks/${list._id}`} className="block">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold text-white truncate">
+              {list.title}
+            </h3>
+            <p className="text-sm text-zinc-500 mt-1">
+              Manage tasks inside this list
+            </p>
+          </div>
+
+        </div>
+      </Link>
+      <div className="flex items-center justify-between mt-6 pt-4 border-t border-zinc-800">
+        {error ? (
+          <p className="text-sm text-red-400">{error}</p>
+        ) : (
+          <span className="text-xs text-zinc-500">Click to open lists</span>
+        )}
+
+        <button
+          onClick={() => deleteTodoList(list._id)}
+          disabled={deleting}
+          className="px-4 py-2 rounded-xl text-sm font-medium bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {deleting ? "Deleting..." : "Delete"}
+        </button>
+      </div>
+    </div>
   );
 }
+

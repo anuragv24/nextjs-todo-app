@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import {useRouter} from "next/navigation"
+import toast from "react-hot-toast";
 
 const TodoForm = ({listId}) => {
     const [todo, setTodo] = useState("");
@@ -22,9 +23,15 @@ const TodoForm = ({listId}) => {
                     todo, todoListId: listId,
                 })
             });
+
+            if (!res.ok) {
+        throw new Error("Request failed");
+      }
+
             const data = await res.json();
             if(data.success){
                 setTodo("");
+                toast.success("Task added");
                 router.refresh();
             }
         } catch (error) {
