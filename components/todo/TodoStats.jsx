@@ -13,40 +13,65 @@ const completedTodos = todos.filter(
     (todo) => todo.status === "in-progress"
   ).length;
 
+  const stats = [
+    {
+      title: "Total Tasks",
+      value: totalTodos,
+      color: "text-white",
+    },
+    {
+      title: "Pending",
+      value: pendingTodos,
+      color: "text-yellow-400",
+    },
+    {
+      title: "In Progress",
+      value: inProgressTodos,
+      color: "text-blue-400",
+    },
+    {
+      title: "Completed",
+      value: completedTodos,
+      color: "text-emerald-400",
+    },
+  ];
+
+
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs sm:text-sm tracking-tight font-medium">
-      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        <p className="text-zinc-400">Total Tasks</p>
+    <div
+      className="
+        grid grid-cols-2
+        gap-4
+        md:grid-cols-4
+      "
+    >
+      {stats.map((stat) => (
+        <div
+          key={stat.title}
+          className="
+            rounded-2xl
+            border border-white/10
+            bg-black/20
+            p-5
+            transition-all duration-200
+            hover:border-white/20
+          "
+        >
+          <p className="text-sm text-slate-400">
+            {stat.title}
+          </p>
 
-        <span className="text-zinc-100 text-lg font-semibold">
-          {totalTodos}
-        </span>
-      </div>
-
-      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        <p className="text-zinc-400">Pending</p>
-
-        <span className="text-yellow-400 text-lg font-semibold">
-          {pendingTodos}
-        </span>
-      </div>
-
-      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        <p className="text-zinc-400">In Progress</p>
-
-        <span className="text-blue-400 text-lg font-semibold">
-          {inProgressTodos}
-        </span>
-      </div>
-
-      <div className="bg-zinc-950/50 border border-zinc-800/80 rounded-xl px-4 py-3 text-center">
-        <p className="text-zinc-400">Completed</p>
-
-        <span className="text-emerald-400 text-lg font-semibold">
-          {completedTodos}
-        </span>
-      </div>
+          <h2
+            className={`
+              mt-3 text-3xl font-bold
+              ${stat.color}
+            `}
+          >
+            {stat.value}
+          </h2>
+        </div>
+      ))}
     </div>
   );
 };

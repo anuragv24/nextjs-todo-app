@@ -3,6 +3,7 @@
 import { useState } from "react"
 import {useRouter} from "next/navigation"
 import toast from "react-hot-toast";
+import { Plus } from "lucide-react";
 
 const TodoForm = ({listId}) => {
     const [todo, setTodo] = useState("");
@@ -36,27 +37,77 @@ const TodoForm = ({listId}) => {
             }
         } catch (error) {
             console.log(error)
+            toast.error("Something went wrong");
         }
     
     }
 
   return (
-    <div className="w-full">
-        <form onSubmit={handleSubmit} className="flex gap-2 w-full">
-            <input 
-                type="text"
-                required
-                placeholder="Add a new task.."
-                value={todo}
-                onChange={(e) => setTodo(e.target.value)}
-                className="flex-1   bg-zinc-900 text-zinc-100 placeholder-zinc-500 text-sm rounded-lg border border-zinc-800 px-4 py-2 outline-none transition duration-200 focus:border-zinc-700 focus:ring-1 focus:ring-zinc-700"
-            />
-            <button 
-                type="submit"
-                className="bg-zinc-100 text-zinc-950 hover:bg-zinc-200 text-sm font-medium px-4 py-2 rounded-lg transition duration-200  cursor-pointer active:scale-[0.98] shrink-0"
-            >Add</button>
-        </form>
-    </div>
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 sm:flex-row"
+    >
+
+      <input
+        type="text"
+        required
+        placeholder="Add a new task..."
+        value={todo}
+        onChange={(e) => setTodo(e.target.value)}
+        className="
+          flex-1
+          rounded-2xl
+          border border-white/10
+          bg-slate-900/70
+          px-4 py-3
+          text-sm text-white
+          placeholder:text-slate-500
+          outline-none
+          transition-all duration-200
+          focus:border-indigo-500
+          focus:ring-2 focus:ring-indigo-500/30
+        "
+      />
+
+      <button
+        type="submit"
+        className="
+          group relative
+          flex items-center justify-center gap-2
+          overflow-hidden
+          rounded-2xl
+          bg-gradient-to-r
+          from-indigo-500 to-cyan-500
+          px-6 py-3
+          text-sm font-semibold text-white
+          shadow-lg
+          transition-all duration-300
+          hover:scale-[1.02]
+          hover:shadow-cyan-500/20
+        "
+      >
+
+        <Plus
+          size={18}
+          className="
+            transition-transform duration-200
+            group-hover:rotate-90
+          "
+        />
+
+        Add Task
+
+        <div
+          className="
+            absolute inset-0
+            translate-y-full
+            bg-white/10
+            transition-transform duration-300
+            group-hover:translate-y-0
+          "
+        />
+      </button>
+    </form>
   )
 }
 

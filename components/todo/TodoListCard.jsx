@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Trash2, ArrowRight } from "lucide-react";
 
 export default function TodoListCard({ list }) {
   const router = useRouter();
@@ -30,40 +31,143 @@ export default function TodoListCard({ list }) {
       }
 
       router.refresh();
+
     } catch (error) {
+
       setError("Something went wrong while deleting the list");
+
     } finally {
       setDeleting(false);
     }
   };
 
   return (
-    <div className="bg-[#171717] border border-zinc-800 rounded-2xl p-5 hover:border-zinc-700 transition-all duration-200">
-      <Link href={`/tasks/${list._id}`} className="block">
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-lg font-semibold text-white truncate">
-              {list.title}
-            </h3>
-            <p className="text-sm text-zinc-500 mt-1">
-              Manage tasks inside this list
-            </p>
+   <div
+      className="
+        group relative overflow-hidden
+        rounded-3xl
+        border border-white/10
+        bg-white/5
+        p-6
+        backdrop-blur-xl
+        transition-all duration-300
+        hover:-translate-y-1
+        hover:border-indigo-500/30
+        hover:shadow-2xl hover:shadow-indigo-500/10
+      "
+    >
+
+      {/* Hover Glow */}
+      <div
+        className="
+          absolute inset-0
+          bg-gradient-to-br
+          from-indigo-500/0
+          to-cyan-500/0
+          opacity-0
+          transition-opacity duration-300
+          group-hover:opacity-100
+        "
+      />
+
+      <Link
+        href={`/tasks/${list._id}`}
+        className="relative z-10 block"
+      >
+
+        <div className="space-y-5">
+
+          {/* Top */}
+          <div className="flex items-start justify-between gap-4">
+
+            <div>
+
+              <h3 className="truncate text-xl font-semibold text-white">
+                {list.title}
+              </h3>
+
+              <p className="mt-2 text-sm text-slate-400">
+                Manage tasks inside this list
+              </p>
+            </div>
+
+            <div
+              className="
+                flex h-12 w-12
+                items-center justify-center
+                rounded-2xl
+                bg-gradient-to-br
+                from-indigo-500
+                to-cyan-500
+                shadow-lg
+              "
+            >
+              <ArrowRight size={20} />
+            </div>
           </div>
 
+          {/* Meta */}
+          <div
+            className="
+              flex items-center justify-between
+              rounded-2xl
+              border border-white/10
+              bg-black/20
+              px-4 py-3
+            "
+          >
+            <span className="text-sm text-slate-400">
+              Created
+            </span>
+
+            <span className="text-sm font-medium text-white">
+              {new Date(list.createdAt).toLocaleDateString()}
+            </span>
+          </div>
         </div>
       </Link>
-      <div className="flex items-center justify-between mt-6 pt-4 border-t border-zinc-800">
+
+      {/* Footer */}
+      <div
+        className="
+          relative z-10
+          mt-6
+          flex items-center justify-between
+          border-t border-white/10
+          pt-4
+        "
+      >
+
         {error ? (
-          <p className="text-sm text-red-400">{error}</p>
+          <p className="text-sm text-red-400">
+            {error}
+          </p>
         ) : (
-          <span className="text-xs text-zinc-500">Click to open lists</span>
+          <span className="text-sm text-slate-500">
+            Click to open list
+          </span>
         )}
 
         <button
           onClick={() => deleteTodoList(list._id)}
           disabled={deleting}
-          className="px-4 py-2 rounded-xl text-sm font-medium bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="
+            flex items-center gap-2
+            rounded-xl
+            border border-red-500/20
+            bg-red-500/10
+            px-4 py-2
+            text-sm font-medium text-red-400
+            transition-all duration-200
+            hover:bg-red-500/20
+            hover:border-red-500/40
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+          "
         >
+
+          <Trash2 size={16} />
+
           {deleting ? "Deleting..." : "Delete"}
         </button>
       </div>
